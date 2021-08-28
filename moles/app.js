@@ -8,11 +8,15 @@ let currentTime = timeLeft.textContent
 let randomPosition = null
 let hitSquare = null
 
-function randomSquare() {
+function clearBoard() {
     // Removes mole from all of the square divs
     square.forEach(className => {
         className.classList.remove('mole')
     })
+}
+
+function randomSquare() {
+    clearBoard()
     // Generate random square to populate
     randomPosition = square[Math.floor(Math.random() * 9)]
     randomPosition.classList.add('mole')
@@ -41,6 +45,7 @@ function countDown() {
     if(currentTime === 0) {
         clearInterval(timerId01)
         clearInterval(timerId02)
+        clearBoard()
         alert('Game Over! Your score is: ' + result)
     }
 }
