@@ -6,6 +6,7 @@ let score = document.querySelector('#score')
 let result = 0
 let currentTime = timeLeft.textContent
 let randomPosition = null
+let hitSquare = null
 
 function randomSquare() {
     // Removes mole from all of the square divs
@@ -25,18 +26,13 @@ square.forEach(id => {
             randomPosition.classList.remove('mole')
             result += 1
             score.textContent = result
-            id.removeEventListener('mouseup')
+            hitSquare = 0
         }
     })
 })
 
 let timerId01 = null
 let timerId02 = null
-
-function moveMole() {
-    timerId01 = setInterval(randomSquare, 1600)
-    timerId02 = setInterval(countDown, 1000)
-}
 
 function countDown() {
     currentTime--
@@ -47,6 +43,11 @@ function countDown() {
         clearInterval(timerId02)
         alert('Game Over! Your score is: ' + result)
     }
+}
+
+function moveMole() {
+    timerId01 = setInterval(randomSquare, 1600)
+    timerId02 = setInterval(countDown, 1000)
 }
 
 moveMole()
