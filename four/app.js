@@ -77,28 +77,38 @@ document.addEventListener('DOMContentLoaded', () => {
         [13, 20, 27, 34]
     ]
 
-    for(var square = 0, len = squares.length; square < len; square++)
-
-    (function(index) {
-        squares[square].onclick = function() {
-            if(squares[index + 7].classList.contains('taken')) {
-                if(currentPlayer === 1) {
-                    squares[index].classList.add('taken');
-                    squares[index].classList.add('player-one');
-                    currentPlayer = 2;
-                    displayCurrentPlayer.innerHTML = currentPlayer;
-                } else if(currentPlayer === 2) {
-                    squares[index].classList.add('taken');
-                    squares[index].classList.add('player-two');
-                    currentPlayer = 1;
-                    displayCurrentPlayer.innerHTML = currentPlayer;
-                }
-            } else alert('You can not choose this one');
+    function fillSquare(id) {
+        if(currentPlayer === 1) {
+            squares[id].classList.add('player-one');
+            currentPlayer = 2;
+        } else if (currentPlayer === 2) {
+            squares[id].classList.add('player-two');
+            currentPlayer = 1;
         }
-    })(square)
+    }
+
+    function checkSquare(squareId){
+        let id = parseInt(squareId);
+        let screaming = id + 7;
+        // Check to see if the square has already been filled
+        if(squares[id].classList.contains('taken')) return;
+        // See if the squareId + 7 has 'taken' tag
+        if(squares[screaming].classList.contains('taken')){
+            squares[id].classList.add('taken');
+            fillSquare(id)
+        } else alert('You can not choose this square!');
+        displayCurrentPlayer.innerHTML = currentPlayer;
+    }
+
+    function gameOver() {
+        squares.forEach(square => {
+            squares[square.id].classList.add('taken');
+            square.removeEventListener('click', checkForWin);
+        });
+        alert('Game Over!');
+    }
 
     function checkForWin(){
-        result.innerHTML = 'Who will win?';
         let p1Counter = 0;
         let p2Counter = 0;
         winningArrays.forEach(array => {
@@ -107,13 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(squares[array[index]].classList.contains('player-one')) p1Counter++;
                 if(squares[array[index]].classList.contains('player-two')) p2Counter++;
                 // If counter reaches 4, return player has won
-                // TODO: build a win function that clears the eventlisteners
+                // TODO: build a gameOver function that clears the eventlisteners
                 if(p1Counter === 4) {
                     result.innerHTML = 'Player 1 has won!';
+                    gameOver();
                     break;
                 }
                 if(p2Counter === 4) {
                     result.innerHTML = 'Player 2 has won!';
+                    gameOver();
                     break;
                 }
             }
@@ -122,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    squares.forEach(id => {
-        id.addEventListener('click', checkForWin);
+    squares.forEach(square => {
+        square.addEventListener('click', function() {checkSquare(square.id)});
+        square.addEventListener('click', checkForWin);
     });
 })

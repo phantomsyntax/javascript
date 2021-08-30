@@ -7,3 +7,6 @@
 
  ## moles
  - whack-a-mole style game
+
+ ## four
+ - four in a row style game

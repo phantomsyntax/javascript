@@ -1,13 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "memory"
-		},
-		{
-			"path": "moles"
-		},
-		{
-			"path": "four"
+			"path": "."
 		}
 	],
 	"settings": {}
